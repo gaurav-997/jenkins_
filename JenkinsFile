@@ -1,0 +1,49 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("Parallel Execution") {
+            parallel {
+                stage ("Clean Workspace") {
+                    steps {
+                        cleanWs()
+                    }
+                }
+
+                stage("Health Check") {
+                    steps {
+                        script {
+                            sh "ls -l"
+                            sh "df -h"  // '-kh' is not valid, replaced with '-h'
+                            sh "lsblk"
+                        }
+                    }
+                }
+
+                stage("Monitoring") {
+                    steps {
+                        script {
+                            sh "netstat -tulnp || ss -tulnp" // 'ss' is an alternative if netstat is unavailable
+                        }
+                    }
+                }
+            }
+        }
+
+        stage("Quality Assurance") {
+            steps {
+                script {
+                    sh "uptime"
+                    sh "free -m"
+                    sh "ip a"  // 'ifconfig' is deprecated, so 'ip a' is better
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline execution completed!"
+        }
+    }
+}
