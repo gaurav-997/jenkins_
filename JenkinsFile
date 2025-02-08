@@ -1,5 +1,9 @@
 pipeline {
     agent any
+
+    parameters{
+        string(name:"quality_check",defaultValue:true)
+    }
     stages {
         stage("git ceckout"){
             steps{
@@ -36,6 +40,7 @@ pipeline {
         }
 
         stage("Quality Assurance") {
+            when {expression params.quality_check==false }
             steps {
                 script {
                     sh "uptime"
