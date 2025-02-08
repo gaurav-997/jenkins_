@@ -40,7 +40,7 @@ pipeline {
         }
 
         stage("Quality Assurance") {
-            when {expression {params.quality_check==false} }
+            when {expression {params.quality_check==true} }
             steps {
                 script {
                     sh "uptime"
