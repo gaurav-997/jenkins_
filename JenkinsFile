@@ -7,7 +7,7 @@ pipeline {
     stages {
         stage("git ceckout"){
             steps{
-                input message: 'can we do cleanup', ok: 'Approve'
+                // input message: 'can we do cleanup', ok: 'Approve'
                 checkout scm
             }
         }
